@@ -12,6 +12,8 @@ const {theme, handleTheme}= useContextGlobal()
 
   return (
     <nav>
+      <div className='DH-ico'><img src= "public/DH.ico" alt= "logo DH" /></div>
+      
       <Link to={routes.home}><h3 className='link'>Home</h3></Link>
       <Link to={routes.contact}><h3 className='link'>Contact</h3></Link>
       <Link to={routes.favs}><h3 className='link'>Favs</h3></Link>
