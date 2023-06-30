@@ -8,11 +8,11 @@ import {useContextGlobal}from '../utils/Context'
 //Este componente debera ser estilado como "dark" o "light" dependiendo del theme del Context
 
 const Navbar = () => {
-const {theme, handleTheme}= useContextGlobal()
+const {state, dispatch}= useContextGlobal();
 
   return (
     <nav>
-      <div className='DH-ico'><img src= "public/DH.ico" alt= "logo DH" /></div>
+      <div className={state.theme == 'light' ? "light" : "dark"}><img src= "public/DH.ico" alt= "logo DH" /></div>
       
       <Link to={routes.home}><h3 className='link'>Home</h3></Link>
       <Link to={routes.contact}><h3 className='link'>Contact</h3></Link>
@@ -20,7 +20,7 @@ const {theme, handleTheme}= useContextGlobal()
 
       {/* Aqui deberan agregar los liks correspondientes a las rutas definidas */}
       {/* Deberan implementar ademas la logica para cambiar de Theme con el button */}
-      <button onClick={handleTheme} >Change theme</button>
+      <button onClick={() => dispatch({ type: "HANDLE_THEME", payload: state.theme== 'light' ? 'dark' : 'light' })}>Change theme</button>
     </nav>
   )
 }

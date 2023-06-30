@@ -1,54 +1,64 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
-import { useState, useMemo } from "react";
+import axios from "axios";
 
-const initialState = {theme: "dark", favs: false}
 
 const ContextGlobal = createContext(); //decia undefined
-/*const initialState = []*/
+
+const initialState = {
+  dentists: [], 
+  dentistDetail: {}, 
+  theme: "light", 
+  favs: JSON.parse(localStorage.getItem('favs')) || []
+}
+
 const reducer = (state, action) =>{
   switch (action.type) {
-    case "DARK":
-      return [...state, action.payload]
-    case "LIGHT":
-      return [...state, action.payload]
-    case "FAVS":
-      return [...state, action.payload]
-  
+    case "GET_ALL_DENTIST":
+      return {...state, dentists: action.payload}
+    case "GET_ONE_DENTIST":
+      return {...state, dentistDetail: action.payload}
+    case "HANDLE_THEME":
+      return { ...state, theme: state.theme === "light" ? "dark" : "light" }
+    case "ADD_FAV":
+      return {...state, favs: [...state.favs, action.payload]}
+    case "QUIT_FAV":
+            return {...state, favs: state.favs.filter(fav => fav.id != action.payload.id)
+            }
     default:
       throw new Error();
   }
 }
-const themes={
-  light:{
-    font: "black",
-    background: "white"
-  },
-  dark:{
-    font:"white",
-    background:"black"
-  }
-  };
 
 const ContextProvider = ({ children }) => {
-  const [theme, setTheme]= useState(themes.light);
- const [state, dispatch] = useReducer (reducer, initialState)
+  const [state, dispatch] = useReducer (reducer, initialState)
+  const urlApi = `https://jsonplaceholder.typicode.com/users/`
+
+  useEffect(() => {
+    axios(urlApi)
+    .then(res => dispatch({type: 'GET_ALL_DENTIST', payload: res.data}))
+}, [urlApi])
+
 
   useEffect(()=> {
-    console.log(state)
-    localStorage.setItem("favs", JSON.stringify(state))
-  },[state])
+    console.log(state.favs)
+    if(state.favs.length < 1) {
+      localStorage.removeItem('favs')
+    } else {
+    localStorage.setItem('favs', JSON.stringify(state.favs))
+    }
+  },[state.favs])
 
-  const handleTheme = ()=>{ theme === themes.light ? setTheme(themes.dark) : setTheme(themes.light)}
+  //const handleTheme = () => {dispatch({ type: "HANDLE_THEME" });
   //Aqui deberan implementar la logica propia del Context, utilizando el hook useMemo
-  //const providerValue = useMemo(()=>({theme, handleTheme}),[theme,handleTheme])  //adaptado del PG
+  //const providerValue = useMemo(()=>({ state, dispatch, handleTheme }),[state, dispatch, handleTheme ])  //adaptado del PG
   
   // el value del provider que sigue permite compartir un estado funciones etc
   return (
-    <ContextGlobal.Provider value={{theme, handleTheme}}>
-
+    <ContextGlobal.Provider value={{state, dispatch}}>
       {children}
     </ContextGlobal.Provider>
   );
 };
 export default ContextProvider
-export const useContextGlobal = ()=> useContext(ContextGlobal)  //useContextGlobal = useGlobalStates de la clase
+export const useContextGlobal = ()=> useContext(ContextGlobal)  
+

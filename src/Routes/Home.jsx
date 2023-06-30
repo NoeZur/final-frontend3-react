@@ -11,8 +11,9 @@ import { useContextGlobal } from '../utils/Context'
 
 const Home = (props) => {
   const {theme, handleTheme}= useContextGlobal()
+  const {state, dispatch}= useContextGlobal()
   
-  const [dentist, setDentist]= useState ([])
+  /*const [dentist, setDentist]= useState ([])
   const url = `https://jsonplaceholder.typicode.com/users/`;
 
   useEffect(() => {
@@ -20,23 +21,18 @@ const Home = (props) => {
     console.log(response) 
     setDentist(response.data)})
 }, [])
-  console.log(dentist)
+  console.log(dentist)*/
 
   return (
-    <main className="home">
+    <main className={state.theme == 'light' ? "light" : "dark"}>
+      
       <h1>Home</h1>
       <h2>This are our Dentists!!</h2> 
       <div className='card-grid'>
-        
-        {dentist.map((dentistItem) => (     
-    <Link to = {'detail/'+ dentistItem.id} key={dentistItem.index}>
+      {state.dentists.map(dentist => 
       
-       <h3 >{dentistItem.name}</h3>
-          <h3>{dentistItem.username}</h3>
-        <h4>{dentistItem.id}</h4>
-        <Card />
-      </Link>
-        ))}
+      <Card key={dentist.id} name={dentist.name} username={dentist.username} id={dentist.id}/>)}
+
 
         {/* Aqui deberias renderizar las cards */}
       </div>

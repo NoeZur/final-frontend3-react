@@ -20,16 +20,31 @@ code {
   width: 100%;
   cursor: pointer;
 }
+.theme{
+  border-radius: 15px;
+  border-width: 1px;
+  height: 30px;
+  cursor: pointer;
+}
+.theme:hover{
+  background-color: lightgray;
+  transition: 1s;
+}
 
+h2{
+  margin-left: 20px;
+}
 h1{
   text-align: center;
 }
 
 nav{
   display: flex;
-  width: 80vw;
-  justify-content:flex-end;
+  width: 90%;
+  justify-content:space-between;
   padding: 1rem;
+  margin: 10px;
+  align-items: center;
 }
 .DH-ico{
   display: flex;
@@ -42,6 +57,7 @@ a{
   text-decoration: none;
   margin: 5px;
   cursor: pointer;
+  width: 200px;
 }
 a:hover{
   color: rgb(136, 136, 136);
@@ -83,7 +99,6 @@ form{
   flex-wrap: wrap;
   flex-direction:column;
   align-items:center;
-  width: 30%;
   padding: 0.5rem 0.5rem 0 0.5rem;
   border: 0.5px solid rgb(136, 136, 136);
 }
@@ -101,16 +116,16 @@ form{
 
 .card-grid{
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-evenly;
   gap: 1rem;
   width: 90vw;
   height: auto;
-  flex-wrap: wrap;
   margin: 0 auto;
 }
 
 table {
- border-collapse: collapse;
+    border-collapse: collapse;
     border-spacing: 0;
     width: 100%;
     display: table;
